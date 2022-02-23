@@ -1,5 +1,6 @@
 import './styles.css';
 import './creation';
+import './operator';
 
 document.getElementById('app').innerHTML = `
 <h1>Hello Vanilla!</h1>
