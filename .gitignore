@@ -3,3 +3,4 @@ dist
 .codesandbox
 .cache
 .DS_Store
+.idea
