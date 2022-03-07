@@ -21,7 +21,17 @@ import {
   from,
   withLatestFrom,
   scan,
-  buffer, bufferTime, bufferCount
+  buffer,
+  bufferTime,
+  bufferCount,
+  delay,
+  delayWhen,
+  EMPTY,
+  debounce,
+  debounceTime,
+  throttleTime,
+  distinct,
+  distinctUntilChanged, catchError, retry, retryWhen, repeat, switchAll, switchMap
 } from 'rxjs';
 
 const observer = {
@@ -181,3 +191,126 @@ const observer = {
 // ).subscribe(observer)
 
 // delay
+// interval(1000).pipe(
+//   delay(1000),
+//   take(3),
+// ).subscribe(observer)
+
+// delayWhen: 延迟当前 Observable 发送的值, 直到传入的函数返回的 Observable 发送值为止
+// 延迟的 Observable 会一次性发送延迟时间内本应该发送的值
+// fromEvent(document, "click").pipe(
+//   delayWhen(e => interval(1000)) // 传入一个返回 Observable 的函数
+// ).subscribe(observer)
+
+// 缓存 Observable 本应该发送的值, 直到点击时, 一次性全部发送出去
+// interval(1000).pipe(
+//   delayWhen(() => fromEvent(document, "click"))
+// ).subscribe(observer)
+
+// debounce:
+// 每次收到元素，他会先把元素 cache 住并等待一段时间，如果这段时间内已经没有收到任何元素，则把元素送出；
+// 如果这段时间内又收到新的元素，则会把原本cache 住的元素释放掉并重新计时，不断反覆。
+// interval(300).pipe(
+//   take(10),
+//   debounceTime(1000)
+// ).subscribe(observer)
+
+// throttle
+// interval(300).pipe(
+//   take(10),
+//   throttleTime(1000)
+// ).subscribe(observer)
+
+// distinct: 去重, 会缓存一个 Set, 用这个 Set 来判断是否重复
+// from(['a', 'b', 'a', 'c', 'b', 'd']).pipe(
+//   zipWith(interval(1000)),
+//   map(([x, ]) => x),
+//   distinct()
+// ).subscribe(observer)
+
+// 第一个参数是 keySelector 函数
+// 第二个参数是 flushes, 是一个 Observable, 当这个 Observable 发送数据时, 清空 distinct 内部缓存的 Set
+// of(
+//   {age: 4, name: 'Foo'},
+//   {age: 7, name: 'Bar'},
+//   {age: 5, name: 'Foo'},
+//   {age: 6, name: 'Foo'},
+//   {age: 7, name: 'Bar'},
+//   {age: 8, name: 'Foo'},
+//   {age: 4, name: 'Foo'},
+// ).pipe(
+//   zipWith(interval(1000)),
+//   map(([x]) => x),
+//   distinct(
+//     (p) => p.age, // 取 age 作为 Set 的 key
+//     fromEvent(document, "click") // 点击时清空 Set
+//   )
+// ).subscribe(observer);
+
+// distinctUntilChanged: 去重, 但是只与上一次的值进行比较, 只缓存上一个值
+// from(['a', 'b', 'c', 'c', 'b']).pipe(
+//   zipWith(interval(300)),
+//   map(([x, y]) => x),
+//   distinctUntilChanged(),
+// ).subscribe(observer)
+// source : --a--b--c--c--b|
+// distinctUntilChanged()
+// example: --a--b--c-----b|
+
+// catch
+// from(['a', 'b', 'c', 'd', 2])
+//   .pipe(
+//     zipWith(interval(500)),
+//     map(([x, y]) => x),
+//     map(x => x.toUpperCase()),
+//     catchError((e, obs) => {
+//       console.log(e)
+//       // return of("h")
+//       return obs // 报错后重试整个 observable
+//     }))
+//   .subscribe(observer)
+
+// retry
+// from(['a', 'b', 'c', 'd', 2])
+//   .pipe(
+//     zipWith(interval(500)),
+//     map(([x, y]) => x),
+//     map(x => x.toUpperCase()),
+//     // retry() // 默认无限次重试
+//     retry(1) // 重试结束后还是错误时, 将错误发送出去
+//   )
+//   .subscribe(observer)
+
+// retryWhen
+// from(['a', 'b', 'c', 'd', 2])
+//   .pipe(
+//     zipWith(interval(500)),
+//     map(([x, y]) => x),
+//     map(x => x.toUpperCase()),
+//     // retryWhen(errObs => errObs.pipe(delay(1000)))
+//     // retryWhen(errObs => errObs.pipe(map(err => fetch('...')))) // 错误错误收集
+//   )
+//   .subscribe(observer)
+
+// repeat: 不出错的情况下重复执行 n 次
+// from(['a', 'b', 'c', 2])
+//   .pipe(
+//     zipWith(interval(500)),
+//     map(([x, y]) => x),
+//     map(x => x.toUpperCase()),
+//     repeat(2),
+//     retry(2)
+//   )
+//   .subscribe(observer)
+
+// switchAll: 将二维 Observable 扁平化, 每次都会处理最新的 Observable, 不管前一个是否完成
+// 每次订阅二维 Observable 中新的 Observable 时, 就会退订上一个 Observable
+// fromEvent(document, "click").pipe(
+//   map(e => interval(1000)),
+//   switchAll()
+// ).subscribe(observer)
+
+// switchMap: map + switchAll
+// fromEvent(document, "click").pipe(
+//   switchMap(e => interval(1000)),
+// ).subscribe(observer)
