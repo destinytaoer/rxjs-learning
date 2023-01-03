@@ -8,8 +8,8 @@ dragBox.style.height = '100px';
 document.body.appendChild(dragBox);
 
 const mouseDown = fromEvent(dragBox, 'mousedown');
-const mouseMove = fromEvent(document.body, 'mousemove');
-const mouseUp = fromEvent(document.body, 'mouseup');
+const mouseMove = fromEvent(document, 'mousemove');
+const mouseUp = fromEvent(document, 'mouseup');
 
 mouseDown
   .pipe(
