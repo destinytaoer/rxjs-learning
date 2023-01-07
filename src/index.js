@@ -1,7 +1,7 @@
 import './styles.css';
-// import './creation';
-import './operator';
-// import './subject';
+// import './basic/creation';
+import './basic/operator';
+// import './basic/subject';
 
 document.getElementById('app').innerHTML = `
 <h1>Hello Vanilla!</h1>
