@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <title>RxJS - "Who to follow" suggestions box</title>
+    <meta charset="UTF-8"/>
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 10px;
+        }
+
+        h2 {
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .refresh {
+            font-size: 80%;
+            margin-left: 10px;
+        }
+
+        .header {
+            background: #ececec;
+            padding: 5px;
+        }
+
+        .suggestions {
+            border: 2px solid #ececec;
+        }
+
+        ul {
+            padding: 0;
+        }
+
+        li {
+            list-style: none;
+            padding: 5px;
+        }
+
+        li img {
+            width: 40px;
+            height: 40px;
+            border-radius: 20px;
+        }
+
+        li .username,
+        li .close {
+            display: inline-block;
+            position: relative;
+            bottom: 15px;
+            left: 5px;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h2>Who to follow</h2><a href="#" class="refresh">Refresh</a>
+    </div>
+    <ul class="suggestions">
+        <li class="suggestion1">
+            <img/>
+            <a href="#" target="_blank" class="username">this will not be displayed</a>
+            <a href="#" class="close close1">x</a>
+        </li>
+        <li class="suggestion2">
+            <img/>
+            <a href="#" target="_blank" class="username">neither this</a>
+            <a href="#" class="close close2">x</a>
+        </li>
+        <li class="suggestion3">
+            <img/>
+            <a href="#" target="_blank" class="username">nor this</a>
+            <a href="#" class="close close3">x</a>
+        </li>
+    </ul>
+</div>
+<script src="index.js"></script>
+</body>
+</html>
